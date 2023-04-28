@@ -7,7 +7,7 @@ void WavetableSynth::prepareToPlay(double sampleRate)
 	initializeOscillators();
 }
 
-void WavetableSynth::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
+void WavetableSynth::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages, float gain)
 {
 	auto currentSample = 0;
 
@@ -16,12 +16,12 @@ void WavetableSynth::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBu
 		const auto midiMessage = midiMetadata.getMessage();
 		const auto midiMessagePosition = static_cast<int>(midiMessage.getTimeStamp());
 
-		render(buffer, currentSample, midiMessagePosition);
+		render(buffer, currentSample, midiMessagePosition, gain);
 		currentSample = midiMessagePosition;
 		handleMidiEvent(midiMessage);
 	}
 
-	render(buffer, currentSample, buffer.getNumSamples());
+	render(buffer, currentSample, buffer.getNumSamples(), gain);
 }
 
 void WavetableSynth::initializeOscillators()
@@ -81,7 +81,7 @@ float WavetableSynth::midiNoteNumberToFrequency(int midiNoteNumber)
 	return A4_FREQUENCY * std::powf(2, (static_cast<float>(midiNoteNumber) - A4_NOTE_NUMBER) / NOTES_IN_AN_OCTAVE);
 }
 
-void WavetableSynth::render(juce::AudioBuffer<float>& buffer, int startSample, int endSample)
+void WavetableSynth::render(juce::AudioBuffer<float>& buffer, int startSample, int endSample, float gain)
 {
 	auto* firstChannel = buffer.getWritePointer(0);
 
@@ -91,7 +91,7 @@ void WavetableSynth::render(juce::AudioBuffer<float>& buffer, int startSample, i
 		{
 			for (auto sample = startSample; sample < endSample; ++sample)
 			{
-				firstChannel[sample] += oscillator.getSample();
+				firstChannel[sample] += oscillator.getSample() * juce::Decibels::decibelsToGain(gain);
 			}
 		}
 	}

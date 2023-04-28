@@ -137,7 +137,7 @@ void SimpleWavetableSynthAudioProcessor::processBlock (juce::AudioBuffer<float>&
     
     buffer.clear();
 
-    synth.processBlock(buffer, midiMessages);
+    synth.processBlock(buffer, midiMessages, mGain);
 }
 
 //==============================================================================

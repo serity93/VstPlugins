@@ -7,7 +7,7 @@ class WavetableSynth
 {
 public:
 	void prepareToPlay(double sampleRate);
-	void processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages);
+	void processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages, float gain);
 
 private:
 	double sampleRate;
@@ -17,5 +17,5 @@ private:
 	std::vector<float> generateSineWaveTable();
 	void handleMidiEvent(const juce::MidiMessage& midiEvent);
 	float midiNoteNumberToFrequency(int midiNoteNumber);
-	void render(juce::AudioBuffer<float>& buffer, int startSample, int endSample);
+	void render(juce::AudioBuffer<float>& buffer, int startSample, int endSample, float gain);
 };
