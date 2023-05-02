@@ -12,7 +12,7 @@
 
 bool SynthVoice::canPlaySound(juce::SynthesiserSound* sound)
 {
-
+    return dynamic_cast<juce::SynthesiserSound*>(sound) != nullptr;
 }
 
 void SynthVoice::startNote(int midiNoteNumber, float velocity, juce::SynthesiserSound* sound, int currentPitchWheelPosition)
@@ -21,6 +21,11 @@ void SynthVoice::startNote(int midiNoteNumber, float velocity, juce::Synthesiser
 }
 
 void SynthVoice::stopNote(float velocity, bool allowTailOff)
+{
+
+}
+
+void SynthVoice::pitchWheelMoved(int newPitchWheelValue)
 {
 
 }
