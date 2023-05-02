@@ -24,6 +24,13 @@ public:
     void controllerMoved(int controllerNumber, int newControllerValue) override;
     void renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int startSample, int numSamples) override;
 
-private:
+    void prepareToPlay(double sampleRate, int samplesPerBlock, int numOutputChannels);
 
+private:
+    // return std::sin(x); // sine wave
+    // return x / MathConstants<float>::pi; // saw wave
+    // return x < 0.0f ? -1.0f : 1.0f; // square wave
+    juce::dsp::Oscillator<float> mOsc{ [](float x) { return std::sin(x); }};
+    juce::dsp::Gain<float> mGain;
+    bool mIsPrepared{ false };
 };
