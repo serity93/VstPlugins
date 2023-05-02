@@ -27,10 +27,14 @@ public:
     void prepareToPlay(double sampleRate, int samplesPerBlock, int numOutputChannels);
 
 private:
+    bool mIsPrepared{ false };
+
+    juce::ADSR mAdsr;
+    juce::ADSR::Parameters mAdsrParams;
+
     // return std::sin(x); // sine wave
     // return x / MathConstants<float>::pi; // saw wave
     // return x < 0.0f ? -1.0f : 1.0f; // square wave
     juce::dsp::Oscillator<float> mOsc{ [](float x) { return std::sin(x); }};
     juce::dsp::Gain<float> mGain;
-    bool mIsPrepared{ false };
 };
